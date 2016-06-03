@@ -1,2 +1,4 @@
 /images/*
 !/images/.placeholder
+/db_backups/*
+!/db_backups/.placeholder
