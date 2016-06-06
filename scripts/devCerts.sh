@@ -58,5 +58,27 @@ do
     generate_signing_request
     generate_certificate
     generate_pem
+  elif [ ! -f local.ovrride.com.csr ]; then
+    generate_signing_request
+    generate_certificate
+    generate_pem
+  elif [ ! -f local.ovrride.com.crt ]; then
+    generate_certificate
+    generate_pem
+  elif [ ! -f local.ovrride.com.pem]; then
+    generate_pem
+  else
+    echo "All Files present for $i"
+  fi
+  # Verify key and crt match
+  certfile="$(openssl x509 -noout -modulus -in $crt | openssl md5)"
+  keyfile="$(openssl rsa -noout -modulus -in $key | openssl md5)"
+
+  if [ "$crtfile" = "$keyfile" ]; then
+    echo "Key and Cert match"
+  else
+    echo "Key and cert do not match, regenerating"
+    generate_signing_request
+    generate_certificate
   fi
 done
