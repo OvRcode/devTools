@@ -1,4 +1,7 @@
-/images/*
-!/images/.placeholder
+/db/*
+!/db/.placeholder
 /db_backups/*
 !/db_backups/.placeholder
+!/db_backups/localize.sql
+ssl/*
+!ssl/config/
