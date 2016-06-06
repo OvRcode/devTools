@@ -75,9 +75,9 @@ do
   keyfile="$(openssl rsa -noout -modulus -in $key | openssl md5)"
 
   if [ "$crtfile" = "$keyfile" ]; then
-    echo "Key and Cert match"
+    echo "Key and Cert match for $i"
   else
-    echo "Key and cert do not match, regenerating"
+    echo "Key and cert do not match for $i, regenerating"
     generate_signing_request
     generate_certificate
   fi
