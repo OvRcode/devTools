@@ -5,7 +5,3 @@
 !/db/backup/.placeholder
 /images/*
 /images/uploads/*
-ssl/*
-ssl/pem/
-!ssl/config/
-!ssl/config/*

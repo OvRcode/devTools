@@ -1,0 +1,5 @@
+FROM alpine:3.4
+COPY config /ssl/config/
+COPY devSSL /usr/bin/devSSL
+RUN apk add --update openssl && rm -rf /var/cache/apk/* && chmod a+x /usr/bin/devSSL
+CMD devSSL

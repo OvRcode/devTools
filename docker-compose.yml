@@ -104,8 +104,9 @@ services:
       - rbb_web
       - ovr_lists
     volumes:
-      - ./ssl/pem:/certs
       - /var/run/docker.sock:/var/run/docker.sock
+    volumes_from:
+      - ssl_volume
     ports:
       - 80:80
       - 443:443
@@ -114,3 +115,7 @@ services:
     build: ./wp_cron
     links:
       - ovr_web
+  ssl_volume:
+    image: tianon/true
+    volumes:
+      - /certs

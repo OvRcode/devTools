@@ -1,0 +1,71 @@
+#!/bin/sh
+generate_key () {
+	echo "Generating Key for $1" >> /dev/stdout
+	passkey="/tmp/$1.passkey"
+	key="/ssl/$1.key"
+
+	openssl genrsa -des3 -passout pass:x -out $passkey 2048
+
+	openssl rsa -passin pass:x -in $passkey -out $key
+
+	rm $passkey
+}
+
+generate_signing_request () {
+	echo "Generating CSR for $1" >> /dev/stdout
+
+	openssl req -new -config "/ssl/config/$1.csr.cnf" -out "/ssl/$1.csr"
+}
+
+generate_certificate () {
+	echo "Generating CERT for $1" >> /dev/stdout
+
+	openssl x509 -req -days 3650 -in "/ssl/$1.csr" -signkey "/ssl/$1.key" -out "/ssl/$1.crt" -extensions v3_req -extfile "/ssl/config/$1.csr.cnf"
+
+}
+
+generate_pem () {
+	echo "Generating PEM for $1" >> /dev/stdout
+
+	cat "/ssl/$1.crt" "/ssl/$1.key" > "/certs/$1.pem"
+	echo "Make sure to trust the self signed certificate for $i when you first visit to avoid SSL warnings" >> /dev/stdout
+}
+
+# Make sure we've got a home for our certificates
+mkdir -p /certs/
+
+for i in "ovrride.dev" "lists.ovrride.dev" "rockawaybeachbus.dev"
+do
+
+	if [ ! -f "/ssl/$i.key" ]; then
+		echo "Missing Key for $i" >> /dev/stdout
+		generate_key $i
+		generate_signing_request $i
+		generate_certificate $i
+		generate_pem $i
+	elif [ ! -f "/ssl/$i.csr" ]; then
+		echo "Missing CSR for $i" >> /dev/stdout
+		generate_signing_request $i
+		generate_certificate $i
+		generate_pem $i
+	elif [ ! -f "/ssl/$i.crt" ]; then
+		echo "Missing CRT for $i" >> /dev/stdout
+		generate_certificate $i
+		generate_pem $i
+	elif [ ! -f "/certs/$i.pem" ]; then
+		echo "Missing PEM for $i" >> /dev/stdout
+		generate_pem $i
+	else
+		echo "All Files present for $i" >> /dev/stdout
+	fi
+
+	# Verify key and crt match
+	certfile=$(openssl x509 -noout -modulus -in "/ssl/$i.crt" | openssl md5 | awk '{print $2}')
+	keyfile=$(openssl rsa -noout -modulus -in "/ssl/$i.key" | openssl md5 | awk '{print $2}')
+	if [ $certfile != $keyfile ]; then
+		echo "Key and cert do not match for $i, regenerating" >> /dev/stdout
+	    	generate_signing_request $i
+	        generate_certificate $i
+		generate_pem $i
+	fi
+done

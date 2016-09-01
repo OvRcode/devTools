@@ -1,5 +1,12 @@
 version: "2.0"
 services:
+  lb:
+    depends_on:
+      - ssl_check
+  ssl_check:
+    build: ./ssl
+    volumes_from:
+      - ssl_volume
   imageDownload:
     container_name: imageDownload
     image: schickling/s3cmd
