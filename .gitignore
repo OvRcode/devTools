@@ -6,7 +6,6 @@
 /images/*
 /images/uploads/*
 ssl/*
-!ssl/pem/
-!ssl/pem/.placeholder
+ssl/pem/
 !ssl/config/
 !ssl/config/*
