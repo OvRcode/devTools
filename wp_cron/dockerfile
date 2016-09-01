@@ -1,0 +1,5 @@
+FROM alpine:3.4
+COPY ovr_wp_cron /bin/ovr_wp_cron
+COPY crontab /var/spool/cron/crontabs/root
+RUN chmod +x /bin/ovr_wp_cron && apk add --update wget && rm -rf /var/cache/apk/*
+CMD crond -l 2 -f
