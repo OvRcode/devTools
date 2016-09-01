@@ -1,7 +1,5 @@
 .DS_Store
 /db/*
 !/db/.placeholder
-/db/backup/*
-!/db/backup/.placeholder
 /images/*
 /images/uploads/*
