@@ -1,0 +1,39 @@
+version: "2.0"
+services:
+  imageDownload:
+    container_name: imageDownload
+    image: schickling/s3cmd
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    command: -v --progress --no-preserve --cache-file=/images/s3cache sync s3://ovrride/ /images/uploads/
+    volumes:
+      - ./images:/images
+  dbDownload:
+    container_name: dbDownload
+    image: schickling/s3cmd
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    volumes:
+      - ./db:/db
+    command: get -f s3://ovrdatabase/latest/ovrride* /db/ovrride.sql.gz
+    depends_on:
+      - db
+  dbImport:
+    container_name: dbImport
+    image: univunix/alpine-mariadb
+    environment:
+      - REMOTE_DB_USER=dev
+      - REMOTE_DB_PASS=Afq8vcPM99W2IsiptfivPInYorpznBY2fryKyHlbo6FOCxZ4cs6HSseFNmaw81G
+    volumes:
+      - ./db:/db
+      - ./scripts/dbImport.sh:/dbImport.sh
+      - ./scripts/pv:/usr/local/bin/pv
+      - ./scripts/ovr_dev.sql:/ovr_dev.sql
+    depends_on:
+      - dbDownload
+    links:
+      - db
+    entrypoint: /bin/sh
+    command: /dbImport.sh
