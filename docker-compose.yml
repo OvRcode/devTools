@@ -54,6 +54,8 @@ services:
     volumes:
       - ./conf/nginx/rbb.conf:/etc/nginx/conf.d/default.conf
       - ./conf/nginx/hhvm.conf:/etc/nginx/hhvm.conf
+    depends_on:
+      - ovr_web
     links:
       - hhvm
       - php
@@ -108,8 +110,10 @@ services:
       - 1936:1936
   wp_cron:
     build: ./wp_cron
+    env_file: ./dev.env
     links:
       - ovr_web
+      - rbb_web
   ssl_volume:
     image: tianon/true
     volumes:

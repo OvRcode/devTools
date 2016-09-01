@@ -1,5 +1,5 @@
 #!/bin/sh
-wget ovr_web/wp-cron.php?doing_wp_cron &> /dev/null
+wget -qO- ovr_web/wp-cron.php?doing_wp_cron > /dev/null
 if [[ "$?" -ne 0 ]]; then
   echo "OvR WP Cron failed" >> /dev/stdout
 fi

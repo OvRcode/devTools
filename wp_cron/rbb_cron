@@ -1,0 +1,5 @@
+#!/bin/sh
+wget -qO- rbb_web/sync.php --post-data="usrpswd=$KEY" > /dev/null
+if [[ "$?" -ne 0 ]]; then
+  echo "RBB Cron failed" >> /dev/stdout
+fi
