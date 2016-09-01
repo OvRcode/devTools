@@ -1,0 +1,51 @@
+FROM php:7.0.9-fpm
+
+RUN /usr/local/bin/docker-php-source extract
+
+# Install memcache extension
+RUN set -x \
+    && apt-get update && apt-get install -y --no-install-recommends unzip libssl-dev libpcre3 libpcre3-dev \
+    && cd /tmp \
+    && curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/php7.zip \
+    && unzip php7 \
+    && cd pecl-memcache-php7 \
+    && /usr/local/bin/phpize \
+    && ./configure --with-php-config=/usr/local/bin/php-config \
+    && make \
+    && make install \
+    && echo "extension=memcache.so" > /usr/local/etc/php/conf.d/ext-memcache.ini \
+    && rm -rf /tmp/pecl-memcache-php7 php7.zip
+
+
+# Install other needed extensions
+RUN apt-get update && apt-get install -y libfreetype6 libjpeg62-turbo libmcrypt4 libpng12-0 sendmail --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN buildDeps=" \
+		libfreetype6-dev \
+		libjpeg-dev \
+		libldap2-dev \
+		libmcrypt-dev \
+		libpng12-dev \
+		zlib1g-dev \
+	"; \
+	set -x \
+	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+	&& docker-php-ext-configure gd --enable-gd-native-ttf --with-jpeg-dir=/usr/lib/x86_64-linux-gnu --with-png-dir=/usr/lib/x86_64-linux-gnu --with-freetype-dir=/usr/lib/x86_64-linux-gnu \
+	&& docker-php-ext-install gd \
+	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu \
+	&& docker-php-ext-install ldap \
+	&& docker-php-ext-install mbstring \
+	&& docker-php-ext-install mcrypt \
+	&& docker-php-ext-install mysqli \
+	&& docker-php-ext-install pdo_mysql \
+	&& docker-php-ext-install zip \
+	&& apt-get purge -y --auto-remove $buildDeps
+	#&& cd /usr/src/php \
+	#&& make clean
+
+
+# Setup timezone to Eastern Standard Time, max upload size to 100M and sessions to memcache
+#RUN cat /usr/src/php/php.ini-production | sed 's/^;\(date.timezone.*\)/\1 \"US\/EASTERN\"/' | sed "s/^\(upload_max_filesize\s*=\s*\).*\$/\1100M/" | sed "s/^\(post_max_size\s*=\s*\).*\$/\1100M/" | sed "s/^\(session.save_handler\s*=\s*\).*\$/\1memcache/" | sed "s/^;session.save_path.*/session.save_path = 'tcp:\/\/memcached:11211'/" > /usr/local/etc/php/php.ini
+RUN cat /usr/src/php/php.ini-production | sed 's/^;\(date.timezone.*\)/\1 \"America\/New_York\"/' | sed "s/^\(upload_max_filesize\s*=\s*\).*\$/\1100M/" | sed "s/^\(post_max_size\s*=\s*\).*\$/\1100M/" | sed "s/^\(session.save_handler\s*=\s*\).*\$/\1memcache/" | sed "s/^;session.save_path.*/session.save_path = 'tcp:\/\/memcached:11211'/" > /usr/local/etc/php/php.ini
+RUN /usr/local/bin/docker-php-source delete
+
+WORKDIR /ovrride
