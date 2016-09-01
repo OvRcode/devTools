@@ -1,0 +1,16 @@
+version: "2.0"
+services:
+  lb:
+    links:
+      - ovr_web
+      - rbb_web
+      - ovr_lists
+      - maintenance_web
+  maintenance_web:
+    image: nginx:1.11.3-alpine
+    volumes:
+      - ./conf/nginx/maintenance.conf:/etc/nginx/conf.d/maintenance.conf
+      - ./maintenance/ovrride.html:/usr/share/nginx/html/index.html
+    environment:
+      - HOST_NAME=ovrride.dev
+      - VIRTUAL_HOST=www.ovrride.dev,ovrride.dev,https://ovrride.dev, https://www.ovrride.devs
