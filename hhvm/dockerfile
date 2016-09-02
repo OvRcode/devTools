@@ -1,0 +1,3 @@
+FROM baptistedonaux/hhvm:3.14
+COPY php.ini /etc/hhvm/php.ini
+COPY server.ini /etc/hhvm/server.ini
