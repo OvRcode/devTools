@@ -1,0 +1,5 @@
+FROM univunix/alpine-mariadb
+COPY ./mariaStart.sh /mariaStart.sh
+COPY ./createCNF.sh /createCNF.sh
+ENTRYPOINT ["/bin/sh"]
+CMD [" /mariaStart.sh"]

@@ -1,7 +1,7 @@
 version: "2.0"
 services:
   db:
-    image: univunix/alpine-mariadb
+    build: ./mariadb
     environment:
       - DB_USER=dev
       - DB_PASS=Afq8vcPM99W2IsiptfivPInYorpznBY2fryKyHlbo6FOCxZ4cs6HSseFNmaw81G
@@ -9,13 +9,9 @@ services:
     depends_on:
       - db_data
     volumes:
-      - ./scripts/mariaStart.sh:/mariaStart.sh
-      - ./scripts/createCNF.sh:/createCNF.sh
       - ./db:/db
     volumes_from:
       - db_data
-    entrypoint: /bin/sh
-    command: /mariaStart.sh
   db_data:
     image: tianon/true
     volumes:
@@ -23,9 +19,8 @@ services:
   memcached:
     image: alloylab/memcached
   hhvm:
-    image: baptistedonaux/hhvm:3.14
+    build: ./hhvm
     volumes:
-      - ./conf/hhvm:/etc/hhvm
       - ${OVRGIT}:/ovrride:rw
       - ${LISTSGIT}:/lists:rw
       - ${RBBGIT}:/rbb:rw
