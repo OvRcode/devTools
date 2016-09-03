@@ -1,5 +1,8 @@
 version: "2.0"
 services:
+  db:
+    volumes:
+      - ./db:/db
   lb:
     depends_on:
       - ssl_check

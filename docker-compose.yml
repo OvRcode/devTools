@@ -6,10 +6,6 @@ services:
       - DB_USER=dev
       - DB_PASS=Afq8vcPM99W2IsiptfivPInYorpznBY2fryKyHlbo6FOCxZ4cs6HSseFNmaw81G
       - DB_ROOT_PASS=vWKLWhf7LkCegEPvpe8MWUhVrq0NPcpFDC7rxR7VECwQ7dS4zRyuEFYOkcdC3L6
-    depends_on:
-      - db_data
-    volumes:
-      - ./db:/db
     volumes_from:
       - db_data
   db_data:
