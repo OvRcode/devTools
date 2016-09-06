@@ -12,5 +12,5 @@ services:
       - ./conf/nginx/maintenance.conf:/etc/nginx/conf.d/maintenance.conf
       - ./maintenance/ovrride.html:/usr/share/nginx/html/index.html
     environment:
-      - HOST_NAME=ovrride.dev
-      - VIRTUAL_HOST=www.ovrride.dev,ovrride.dev,https://ovrride.dev, https://www.ovrride.devs
+      - HOST_NAME=ovrride.com
+      - VIRTUAL_HOST=www.ovrride.com,ovrride.com,https://ovrride.com, https://www.ovrride.com
