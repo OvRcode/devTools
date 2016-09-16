@@ -10,3 +10,7 @@ services:
       - db
   rbb_code:
     build: ./rbb_code
+  ovr_code:
+    build:
+      context: ./ovr_code
+      dockerfile: dockerfile-production
