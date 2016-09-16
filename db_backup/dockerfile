@@ -1,0 +1,10 @@
+FROM alpine:3.4
+RUN apk add --update mariadb-client python py-pip openssl coreutils \
+&& rm -rf /var/cache/apk/* && pip install python-dateutil python-magic \
+&& cd /usr/share/misc/ && wget https://github.com/s3tools/s3cmd/archive/master.zip \
+&& unzip /usr/share/misc/master.zip && mv /usr/share/misc/s3cmd-master/S3 /usr/local/bin/ \
+&& mv /usr/share/misc/s3cmd-master/s3cmd /usr/local/bin/ && rm -r /usr/share/misc/s3cmd*
+COPY ./ovr_backup /bin/ovr_backup
+RUN chmod +x /bin/ovr_backup
+COPY ./crontab /var/spool/cron/crontabs/root
+CMD crond -l 2 -f

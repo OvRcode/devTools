@@ -1,0 +1,29 @@
+#!/bin/sh
+# Silently create backups folder
+mkdir -p /backups/
+# Clear any existing tar files
+rm /backups/*.tar.gz
+downum=$(date +"%w")
+dow=$(date +"%A")
+weeknum=$(date +"%U")
+filename=/backups/ovrride_${dow}.sql.tar.gz
+weekname=ovrride_${weeknum}.sql.tar.gz
+monthname=ovrride_$(date +"%B").sql.tar.gz
+lastdayofmonth=$(date -d "-$(date +%d) days +1 month")
+mysqldump --host=db --user=$MYSQL_USER --password=$MYSQL_PASS --single-transaction --quick --result-file=/backups/ovrride.sql ovrride \
+&& tar -czvf $filename /backups/ovrride.sql \
+&& s3cmd --no-check-certificate put $filename s3://ovrdatabase/daily/
+# Copy daily to Weekly on Saturday
+if [ $downum -eq 6 ];then
+        s3cmd --no-check-certificate cp s3://ovrdatabase/daily/ovrride_${dow}.sql.tar.gz s3://ovrdatabase/weekly/$weekname
+fi
+# Copy daily to Monthly on last day of month
+if [ $downum -eq $lastdayofmonth ];then
+        s3cmd --no-check-certificate cp s3://ovrdatabase/daily/ovrride_${dow}.sql.tar.gz s3://ovrdatabase/monthly/$monthname
+        # Copy all monthlies to a year folder at the end of the year
+        if [ 12 -eq $(date +"%m") ];then
+                year=$(date +"%Y")
+                s3cmd --no-check-certificate mv s3://ovrdatabase/monthly/* s3://ovrdatabase/yearly/${year}/                                               
+        fi
+
+fi
