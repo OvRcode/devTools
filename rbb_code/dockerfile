@@ -1,0 +1,5 @@
+FROM alpine:3.4
+RUN apk add --update git && rm /var/cache/apk/* \
+&& git clone --depth 1 --branch master git@github.com:OvRcode/rockawaybeachbus.git /usr/share/nginx/rbb/
+VOLUME /usr/share/nginx/rbb/
+CMD true
