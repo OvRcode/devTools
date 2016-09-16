@@ -1,4 +1,19 @@
-FROM univunix/alpine-mariadb
+FROM alpine:3.4
+ENV LANG="en_GB.UTF-8" \
+    LC_ALL="en_GB.UTF-8" \
+    LANGUAGE="en_GB.UTF-8" \
+		DB_ROOT_PASS="insecurepassword" \
+    DB_USER="admin" \
+    DB_PASS="password" \
+    TERM="xterm"
+
+RUN apk -U upgrade && \
+    apk --update add \
+      mariadb mariadb-client \
+      && \
+      rm -rf /tmp/src && \
+      rm -rf /var/cache/apk/*
+COPY ./my.cnf /etc/mysql/my.cnf
 COPY ./mariaStart.sh /mariaStart.sh
 COPY ./createCNF.sh /createCNF.sh
 RUN chmod +x /mariaStart.sh
