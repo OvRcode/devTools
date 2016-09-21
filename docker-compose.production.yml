@@ -24,3 +24,10 @@ services:
   ovr_lists:
     environment:
       - VIRTUAL_HOST=https://lists.ovrride.com, http://lists.ovrride.com
+  image_sync:
+    build: ./image_sync
+    environment:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+    volumes_from:
+      - ovr_web
