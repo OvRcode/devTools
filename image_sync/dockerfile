@@ -1,0 +1,9 @@
+FROM alpine:3.4
+RUN apk add --update automake openssl alpine-sdk libtool autoconf python py-pip py-setuptools ca-certificates\
+&& wget https://github.com/rvoicilas/inotify-tools/archive/master.zip && unzip master.zip \
+&& cd inotify-tools-master && ./autogen.sh && ./configure && make && make install \
+&& git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd && cd /tmp/s3cmd \
+&& python setup.py install && apk del alpine-sdk libtool autoconf automake && rm -rf /var/cache/apk/* /tmp/s3cmd /master.zip /inotify-tools-master/
+COPY ./img_sync /bin/img_sync
+RUN chmod +x /bin/img_sync
+CMD img_sync

@@ -14,3 +14,13 @@ services:
     build:
       context: ./ovr_code
       dockerfile: dockerfile-production
+  ovr_web:
+    environment:
+      - VIRTUAL_HOST=http://ovrride.com,http://www.ovrride.com,https://ovrride.com,https://www.ovrride.com
+      - HOST_NAME=ovrride.com
+  rbb_web:
+    environment:
+      - VIRTUAL_HOST=http://rockawaybeachbus.com,https://rockawaybeachbus.com
+  ovr_lists:
+    environment:
+      - VIRTUAL_HOST=https://lists.ovrride.com, http://lists.ovrride.com

@@ -1,0 +1,11 @@
+#!/bin/sh
+inotifywait -d -r --format '%:e:%w%f' /ovrride/wp-content/uploads/ | while read FILE
+do
+  filename="$(echo $FILE | cut -d ":" -f 2)"
+  operation="$(echo $FILE | cut -d ":" -f 1)"
+  if [ $operation = "DELETE" ]; then
+        s3cmd del S3://$filename
+  elif [ $operation = "CREATE" ] || [ $operation = "MODIFY" ]; then
+        s3cmd put --no-mime-magic $filename S3://$filename
+  fi
+done
