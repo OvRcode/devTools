@@ -37,7 +37,7 @@ services:
     image: nginx:alpine
     environment:
       - VIRTUAL_HOST=http://ovrride.dev,http://www.ovrride.dev,https://ovrride.dev,https://www.ovrride.dev
-        - HOST_NAME=ovrride.dev
+      - HOST_NAME=ovrride.dev
     volumes_from:
       - ovr_code
     volumes:
