@@ -1,6 +1,6 @@
 FROM alpine:3.4
 RUN apk add --update git && rm /var/cache/apk/*
-RUN rm -fr /usr/share/nginx/wordpress/ && git clone -b "4.6.1" --single-branch https://github.com/WordPress/WordPress.git /usr/share/nginx/wordpress/
+RUN rm -fr /usr/share/nginx/wordpress/ && git clone -b "4.7.2" --single-branch https://github.com/WordPress/WordPress.git /usr/share/nginx/wordpress/
 COPY wp-config.php /usr/share/nginx/wordpress/wp-config.php
 VOLUME /usr/share/nginx/wordpress/
 CMD true
