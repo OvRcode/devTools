@@ -1,5 +1,5 @@
 #!/bin/sh
-wget -qO- rbb_web/sync.php --post-data="usrpswd=$KEY" > /dev/null
-if [[ "$?" -ne 0 ]]; then
-  echo "RBB Cron failed" >> /dev/stdout
+STATUS=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $CRON_RBB_HOST" --data "userpswd=$KEY" http://rbb_web/sync.php)
+if [[ $STATUS -ne 200 ]]; then
+  echo "RBB Cron failed, http code $STATUS" >> /dev/stdout
 fi

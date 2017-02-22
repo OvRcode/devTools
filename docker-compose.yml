@@ -37,7 +37,6 @@ services:
     image: nginx:alpine
     environment:
       - VIRTUAL_HOST=http://ovrride.dev,http://www.ovrride.dev,https://ovrride.dev,https://www.ovrride.dev
-    env_file: ./dev.env
     expose:
       - "80"
       - "443"

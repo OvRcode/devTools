@@ -1,0 +1,12 @@
+#!/bin/sh
+# Set defaults if nothing is specified
+if [ -z "$CRON_OVR_FREQUENCY" ];then
+  export CRON_OVR_FREQUENCY="*/1  * * * *"
+fi
+
+if [ -z "$CRON_RBB_FREQUENCY" ];then
+    export CRON_RBB_FREQUENCY="*/1 *  * * *"
+fi
+
+cp /crontab_template /var/spool/cron/crontabs/root
+sed -i -e 's,${CRON_OVR_FREQUENCY},'"$CRON_OVR_FREQUENCY"',' -e 's,${CRON_RBB_FREQUENCY},'"$CRON_RBB_FREQUENCY"',' /var/spool/cron/crontabs/root
