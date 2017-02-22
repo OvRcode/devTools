@@ -1,2 +1,2 @@
-*/5 	*	*	*	*	/bin/ovr_wp_cron
+*/1 	*	*	*	*	/bin/ovr_wp_cron
 */15  * * * * /bin/rbb_cron
