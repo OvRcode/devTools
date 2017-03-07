@@ -2,7 +2,8 @@ version: "2.0"
 services:
   db:
     build: ./mariadb
-    cpu_shares: 512
+    cpu_shares: 1024
+    mem_limit: 2147483648
     environment:
       - DB_USER=dev
       - DB_PASS=Afq8vcPM99W2IsiptfivPInYorpznBY2fryKyHlbo6FOCxZ4cs6HSseFNmaw81G
@@ -15,11 +16,11 @@ services:
       - /data/db/mysql
   memcached:
     image: alloylab/memcached
-    cpu_shares: 96
+    cpu_shares: 64
   ovr_hhvm:
     build: ./hhvm
     cpu_shares: 512
-    mem_limit: 536870912
+    mem_limit: 1073741824
     volumes_from:
       - ovr_code
     env_file: ./dev.env
@@ -28,7 +29,8 @@ services:
       - db
   php:
     build: ./php7
-    cpu_shares: 96
+    cpu_shares: 512
+    mem_limit: 1073741824
     volumes:
       - ${OVRGIT}:/ovrride:rw
       - ${LISTSGIT}:/lists:rw
@@ -40,7 +42,7 @@ services:
       - db
   ovr_web:
     image: nginx:alpine
-    cpu_shares: 25
+    cpu_shares: 128
     environment:
       - VIRTUAL_HOST=http://ovrride.dev,http://www.ovrride.dev,https://ovrride.dev,https://www.ovrride.dev
     expose:
@@ -103,7 +105,8 @@ services:
       - ./conf/nginx/mime.types:/etc/nginx/mime.types
   lb:
     image: dockercloud/haproxy
-    cpu_shares: 128
+    cpu_shares: 512
+    mem_limit: 536870912
     environment:
       - CERT_FOLDER=/certs/
       - SSL_BIND_CIPHERS=ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
