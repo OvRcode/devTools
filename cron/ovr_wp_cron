@@ -1,6 +1,6 @@
 #!/bin/sh
 
-STATUS=$(curl -s -o /dev/null -w '%{http_code}' -H "Host: $CRON_OVR_HOST" http://ovr_web/wp-cron.php?doing_wp_cron)
+STATUS=$(curl -s -A "OvRcron" -o /dev/null -w '%{http_code}' -H "Host: $CRON_OVR_HOST" http://ovr_web/wp-cron.php?doing_wp_cron)
 
 if [[ $STATUS -ne 200 ]]; then
   echo "OvRride Cron failed, http code $STATUS" >> /dev/stdout
