@@ -8,6 +8,7 @@ distinguished_name = req_distinguished_name
 string_mask = utf8only
 
 req_extensions = v3_req
+x509_extensions = v3_ca
 
 [ req_distinguished_name ]
 O=OvRride LLC
@@ -20,3 +21,10 @@ CN=lists.ovrride.dev
 
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+[v3_ca]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = *.lists.ovrride.dev
+DNS.2 = lists.ovrride.dev

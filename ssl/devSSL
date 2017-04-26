@@ -20,8 +20,7 @@ generate_signing_request () {
 generate_certificate () {
 	echo "Generating CERT for $1" >> /dev/stdout
 
-	openssl x509 -req -days 3650 -in "/ssl/$1.csr" -signkey "/ssl/$1.key" -out "/ssl/$1.crt" -extensions v3_req -extfile "/ssl/config/$1.csr.cnf"
-
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout "/ssl/$1.key" -out "/ssl/$1.crt" -config "/ssl/config/$1.csr.cnf"
 }
 
 generate_pem () {
