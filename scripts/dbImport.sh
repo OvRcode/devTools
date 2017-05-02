@@ -9,7 +9,7 @@ done
 LOOPCOUNT=0
 until gunzip -tf /db/ovrride.sql.gz; do
   LOOPCOUNT=$((LOOPCOUNT+1))
-  if [ $LOOPCOUNT -gt 30 ]; then
+  if [ $LOOPCOUNT -gt 10 ]; then
     echo "Something went wrong, it's taking too long to download db!"
     exit 126
   else
