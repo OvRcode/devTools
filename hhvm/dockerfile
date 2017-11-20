@@ -1,3 +1,4 @@
-FROM baptistedonaux/hhvm:3.14
+FROM baptistedonaux/hhvm:3.20
 COPY php.ini /etc/hhvm/php.ini
 COPY server.ini /etc/hhvm/server.ini
+CMD ["hhvm", "-m", "server", "-vServer.AllowRunAsRoot=1" ,"-vServer.Type=fastcgi", "-vServer.Port=9000"]

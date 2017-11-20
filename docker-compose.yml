@@ -31,11 +31,11 @@ services:
     build: ./php7
     cpu_shares: 512
     mem_limit: 1073741824
+    volumes_from:
+      - ovr_code
+      - rbb_code
     volumes:
-      - ${OVRGIT}:/ovrride:rw
       - ${LISTSGIT}:/lists:rw
-      - ${RBBGIT}:/rbb:rw
-      - ./images/uploads:/ovrride/wp-content/uploads:rw
     env_file: ./dev.env
     links:
       - memcached
@@ -44,7 +44,7 @@ services:
     image: nginx:alpine
     cpu_shares: 128
     environment:
-      - VIRTUAL_HOST=http://ovrride.dev,http://www.ovrride.dev,https://ovrride.dev,https://www.ovrride.dev
+      - VIRTUAL_HOST=http://ovrride.dev,http://www.ovrride.dev,https://ovrride.dev,https://www.ovrride.dev, http://static1.ovrride.dev,https://static1.ovrride.dev,http://static2.ovrride.dev,https://static2.ovrride.dev
     expose:
       - "80"
       - "443"
@@ -76,7 +76,7 @@ services:
       - rbb_code
     volumes:
       - ./conf/nginx/rbb.conf:/etc/nginx/conf.d/default.conf
-      - ./conf/nginx/hhvm.conf:/etc/nginx/hhvm.conf
+      - ./conf/nginx/rbb_hhvm.conf:/etc/nginx/hhvm.conf
     depends_on:
       - ovr_web
     links:
@@ -93,6 +93,9 @@ services:
     environment:
       - VIRTUAL_HOST=https://lists.ovrride.dev, http://lists.ovrride.dev
       - FORCE_SSL=true
+    expose:
+      - "80"
+      - "443"
     links:
       - php
     depends_on:
