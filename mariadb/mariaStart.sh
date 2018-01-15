@@ -4,6 +4,7 @@ cat << EOF > /root/.my.cnf
 [client]
 user=$1
 password=$2
+database = ovrride
 EOF
 
 chmod 600 /root/.my.cnf

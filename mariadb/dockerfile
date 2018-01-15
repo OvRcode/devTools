@@ -15,6 +15,5 @@ RUN apk -U upgrade && \
       rm -rf /var/cache/apk/*
 COPY ./my.cnf /etc/mysql/my.cnf
 COPY ./mariaStart.sh /mariaStart.sh
-COPY ./createCNF.sh /createCNF.sh
 RUN chmod +x /mariaStart.sh
 CMD /mariaStart.sh $DB_USER $DB_PASS
