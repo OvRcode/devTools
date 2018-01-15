@@ -24,5 +24,5 @@ echo "Starting Import"
 set -e
 
 mysql -hdb -u$REMOTE_DB_USER -p$REMOTE_DB_PASS -e 'CREATE DATABASE IF NOT EXISTS ovrride'
-pv -f /db/ovrride.sql | mysql -hdb -u$REMOTE_DB_USER -p$REMOTE_DB_PASS
-pv -f /ovr_dev.sql | mysql -hdb -u$REMOTE_DB_USER -p$REMOTE_DB_PASS
+pv -f /db/ovrride.sql | mysql -hdb -u$REMOTE_DB_USER -p$REMOTE_DB_PASS  ovrride
+pv -f /ovr_dev.sql | mysql -hdb -u$REMOTE_DB_USER -p$REMOTE_DB_PASS  ovrride
