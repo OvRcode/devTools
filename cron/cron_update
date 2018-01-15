@@ -1,11 +1,11 @@
 #!/bin/sh
 # Set defaults if nothing is specified
 if [ -z "$CRON_OVR_FREQUENCY" ];then
-  export CRON_OVR_FREQUENCY="*/1  * * * *"
+  export CRON_OVR_FREQUENCY="*/10  * * * *"
 fi
 
 if [ -z "$CRON_RBB_FREQUENCY" ];then
-    export CRON_RBB_FREQUENCY="*/1 *  * * *"
+    export CRON_RBB_FREQUENCY="*/10 *  * * *"
 fi
 
 cp /crontab_template /var/spool/cron/crontabs/root

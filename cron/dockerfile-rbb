@@ -1,0 +1,7 @@
+FROM alpine:3.4
+COPY rbb_cron /bin/rbb_cron
+COPY crontab /crontab_template
+COPY cron_update /bin/cron_update
+RUN  chmod +x /bin/rbb_cron && \
+chmod +x /bin/cron_update && apk add --update curl && rm -rf /var/cache/apk/*
+CMD cron_update && crond -l 2 -f
