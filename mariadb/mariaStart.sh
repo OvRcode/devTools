@@ -1,4 +1,13 @@
 #!/bin/sh
+# Create CNF file with login credentials
+cat << EOF > /root/.my.cnf
+[client]
+user=$1
+password=$2
+EOF
+
+chmod 600 /root/.my.cnf
+
 mkdir -p /data/log/mysql
 mkdir -p /data/db/mysql/
 mkdir -p /data/conf
