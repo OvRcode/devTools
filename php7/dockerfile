@@ -32,7 +32,7 @@ RUN cp /usr/src/php/php.ini-production /usr/local/etc/php/php.ini
 RUN sed -i'' 's/^;\(date.timezone.*\)/\1 \"America\/New_York"/' /usr/local/etc/php/php.ini
 RUN sed -i'' 's/^\(upload_max_filesize\s*=\s*\).*\$/\1100M/' /usr/local/etc/php/php.ini
 RUN sed -i'' 's/^\(post_max_size\s*=\s*\).*\$/\1100M/' /usr/local/etc/php/php.ini
-RUN sed -i'' 's/^\(session.save_handler\s*=\s*\).*\$/\1redis/' /usr/local/etc/php/php.ini
+RUN sed -i'' 's/^session.save_handler.*$/session.save_handler = redis/' /usr/local/etc/php/php.ini
 RUN sed -i'' "s/^;session.save_path.*/session.save_path = 'tcp:\/\/redis:6379'/" /usr/local/etc/php/php.ini
 RUN sed -i'' 's/^pm.max_children.*/pm.max_children = 20/' /usr/local/etc/php-fpm.d/www.conf
 RUN /usr/local/bin/docker-php-source delete
