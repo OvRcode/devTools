@@ -24,7 +24,7 @@ RUN buildDeps=" \
 	&& docker-php-ext-install pdo_sqlite \
 	&& docker-php-ext-install zip \
 	&& apt-get purge -y --auto-remove $buildDeps && apt-get clean
-RUN pecl install redis
+RUN pecl install redis-3.1.4 && docker-php-ext-enable redis
 
 
 # Setup timezone to Eastern Standard Time, max upload size to 100M and sessions to memcache
