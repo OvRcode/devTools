@@ -16,7 +16,7 @@ services:
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
-    command: -v --progress --no-preserve --cache-file=/images/s3cache sync s3://ovrride/wp-content/uploads /images/uploads/
+    command: --no-preserve --stats --cache-file=/images/s3cache sync s3://ovrride/wp-content/uploads/ /images/uploads/
     volumes:
       - ./images:/images
   dbDownload:
