@@ -1,2 +1,1 @@
-${CRON_OVR_FREQUENCY} /bin/ovr_wp_cron
-${CRON_RBB_FREQUENCY} /bin/rbb_cron
+*/5 * * * * /bin/ovr_wp_cron
